@@ -1,0 +1,13 @@
+<script type="text/javascript">
+    $(function () {
+        FirstProject.selectTab(<%= @tab.to_json.html_safe %>);
+
+        window.router = new FirstProject.Routers.FriendsRouter({
+            friends: <%= @friends.to_json.html_safe %>
+        });
+
+        window.router.index();
+    });
+</script>
+
+<div id="friends"></div>

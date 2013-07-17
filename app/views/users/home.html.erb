@@ -1,0 +1,9 @@
+<script type="text/javascript">
+    $(function () {
+        FirstProject.selectTab(<%= @tab.to_json.html_safe %>);
+    });
+</script>
+
+<div>
+  <h3><%= ab_test('go_to_friends', 'Click Friends!', 'Friends tab is waiting for you!', 'Check your Friends list!') %></h3>
+</div>

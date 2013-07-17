@@ -1,0 +1,40 @@
+// Place all the styles related to the sessions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.float_left {
+  float: left;
+}
+
+.float_right {
+  float: right;
+}
+
+#user_nav {
+  margin-bottom: 10px;
+  height: 46px;
+  background-color: #33ccff;
+
+  & img {
+    margin-top: 3px;
+    height: 40px;
+    width: 40px;
+  }
+
+  & span {
+    height: 100%;
+    line-height: 50px;
+  }
+
+  & a {
+    padding: 10px;
+  }
+}
+
+.menu {
+  margin-right: 5px;
+}
+
+.menu:hover, .selected{
+  background-color: #3399ff;
+}

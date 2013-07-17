@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FirstProject</title>
+  <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<div id="user_nav">
+  <% if current_user %>
+      <span class="float_left menu" data-tab-name="home"><a href='/users/home'><img src='<%= current_user.image_url %>'> <strong><%= current_user.name %></strong></a></span>
+      <span class="float_left menu" data-tab-name="following"><%= link_to 'Following', '/users/following' %></span>
+      <span class="float_left menu" data-tab-name="friends"><%= link_to 'Friends', '/users/friends' %></span>
+      <span class="float_left menu" data-tab-name="app_users"><%= link_to 'App Users', '/users/app_users' %></span>
+      <span class="float_right"><%= link_to "Sign out", signout_path, id: "sign_out" %></span>
+  <% else %>
+      <span><h2>Welcome to my app! <%= link_to "Sign in with Facebook", "/auth/facebook", id: "sign_in" %> </h2></span>
+  <% end %>
+</div>
+
+<div id='content'>
+  <%= yield %>
+</div>
+
+</body>
+</html>
