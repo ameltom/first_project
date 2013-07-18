@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
       user.serializable_hash(
           only: [:uid, :name, :image_url]
       ).merge(
-          is_follow: following?(uid)
+          is_follow: following?(user.uid)
       )
     end.sort_by { |f| f['name'] }
   end
