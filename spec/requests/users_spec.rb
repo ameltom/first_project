@@ -4,7 +4,7 @@ describe 'Users' do
   describe 'GET /users/home', type: :feature do
 
     before :all do
-      @u = User.create! provider: 'facebook', uid: '9999', name: 'Tester Test',  image_url: 'http://some_img', email: 'tester@email.com', oauth_token: 'token', oauth_expires_at: Time.now + 86400
+      @u = User.create! username:'theTester', provider: 'facebook', uid: '9999', name: 'Tester Test',  image_url: 'http://some_img', email: 'tester@email.com', oauth_token: 'token', oauth_expires_at: Time.now + 86400
     end
 
     it 'should select the home tab', js: true do

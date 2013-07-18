@@ -58,3 +58,5 @@ gem 'fb_graph'
 gem 'redis'
 gem 'rails-backbone'
 gem 'split', :require => 'split/dashboard'
+
+gem 'sorcery'

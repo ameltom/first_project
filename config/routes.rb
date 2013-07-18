@@ -61,11 +61,14 @@ FirstProject::Application.routes.draw do
   mount Split::Dashboard, :at => 'split'
 
   get 'sessions/new'
+  get 'users/new'
   get 'users/following'
   get 'users/friends'
   get 'users/app_users'
   get 'users/home'
 
+  post 'sessions/create'
+  post 'users/create'
   post 'users/follow'
   post 'users/unfollow'
 

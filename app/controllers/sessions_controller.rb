@@ -1,18 +1,27 @@
 class SessionsController < ApplicationController
-  skip_before_filter :ensure_login
+  skip_before_filter :require_login
 
   def new
-
+    @user = User.new
   end
 
   def create
-    user = User.from_omniauth(env["omniauth.auth"])
-    session[:user_id] = user.id
-    redirect_to root_url
+    if env["omniauth.auth"]
+      user = User.from_omniauth(env["omniauth.auth"])
+      session[:user_id] = user.id
+      redirect_to root_url
+    else
+      if @user = login(params[:username], params[:password])
+        redirect_to root_url
+      else
+        flash.now[:alert] = 'Login failed.'
+        render :action => 'new'
+      end
+    end
   end
 
   def destroy
-    session[:user_id] = nil
+    logout
     redirect_to root_url
   end
 end

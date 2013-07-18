@@ -1,7 +1,9 @@
 class User < ActiveRecord::Base
+  authenticates_with_sorcery!
 
-  before_save :set_uid
-  after_save :set_fb_data
+  validates_confirmation_of :password, :message => "should match confirmation", :if => :password
+
+  after_save :set_uid, :set_fb_data
 
   def self.set_fb_data(uid, name, image_url)
     $redis.hmset "fb_user:#{uid}", 'name', name, 'image_url', image_url, 'uid', uid
@@ -12,6 +14,7 @@ class User < ActiveRecord::Base
       user.provider = auth.provider
       user.uid = auth.uid
       user.name = auth.info.name
+      user.username = auth.info.nickname
       user.email = auth.info.email
       user.image_url = auth.info.image
       user.oauth_token = auth.credentials.token
@@ -19,13 +22,13 @@ class User < ActiveRecord::Base
 
       user.save!
 
-      user.update_fb_friends auth
+      user.update_fb_friends
     end
   end
 
-  def update_fb_friends(auth)
+  def update_fb_friends
     $redis.del friends_key
-    facebook_user = FbGraph::User.new(auth.info.nickname, :access_token => oauth_token).fetch
+    facebook_user = FbGraph::User.new(username, :access_token => oauth_token).fetch
     facebook_user.friends.each do |friend|
       $redis.sadd friends_key, friend.identifier
       User.set_fb_data friend.identifier, friend.name, friend.picture
@@ -37,19 +40,19 @@ class User < ActiveRecord::Base
   end
 
   def following
-    fb_datas $redis.smembers(follows_key)
+    fb_datas $redis.smembers(following_key)
   end
 
   def follow(uid)
-    $redis.sadd follows_key, uid
+    $redis.sadd following_key, uid
   end
 
   def unfollow(uid)
-    $redis.srem follows_key, uid
+    $redis.srem following_key, uid
   end
 
   def following?(uid)
-    $redis.sismember follows_key, uid
+    $redis.sismember following_key, uid
   end
 
   def set_fb_data
@@ -73,7 +76,7 @@ class User < ActiveRecord::Base
   end
 
   def set_uid
-    self.uid ||= "app#{id}"
+    update_attributes! uid: "app#{id}" unless uid
   end
 
   private
@@ -82,8 +85,7 @@ class User < ActiveRecord::Base
     "user:#{id}:friends"
   end
 
-  def follows_key
-    "user:#{id}:follows"
+  def following_key
+    "user:#{id}:following"
   end
-
 end

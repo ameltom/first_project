@@ -1,4 +1,4 @@
-<td><img src="<%= image_url %>"></td>
+<td><%= image_url ? '<img src='+image_url+'>' : '' %></td>
 <td><%= name %></td>
 <td style="display: <%= is_follow ? 'none' : 'table-cell' %>"><button onclick="FirstProject.changeFriendship(false, '<%= uid %>', this);">follow</button></td>
 <td style="display: <%= is_follow ? 'table-cell' : 'none' %>"><button onclick="FirstProject.changeFriendship(true, '<%= uid %>', this);">unfollow</button></td>
