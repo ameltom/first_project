@@ -7,3 +7,13 @@
 <div>
   <h3><%= ab_test('go_to_friends', 'Click Friends!', 'Friends tab is waiting for you!', 'Check your Friends list!') %></h3>
 </div>
+
+<%= form_for current_user, url: '/users/update_status', method: :post do |f| %>
+    <div class="field">
+      <%= f.label :status %><br />
+      <%= f.text_field :status %>
+    </div>
+    <div class="actions">
+      <%= f.submit value: 'Update' %>
+    </div>
+<% end %>

@@ -5,8 +5,8 @@ class User < ActiveRecord::Base
 
   after_save :set_uid, :set_fb_data
 
-  def self.set_fb_data(uid, name, image_url)
-    $redis.hmset "fb_user:#{uid}", 'name', name, 'image_url', image_url, 'uid', uid
+  def self.set_fb_data(uid, name, image_url, status = nil)
+    $redis.hmset "fb_user:#{uid}", 'name', name, 'image_url', image_url, 'uid', uid, 'status', status
   end
 
   def self.from_omniauth(auth)
@@ -56,19 +56,21 @@ class User < ActiveRecord::Base
   end
 
   def set_fb_data
-    User.set_fb_data uid, name, image_url
+    User.set_fb_data uid, name, image_url, status
   end
 
   def fb_datas(uids)
     uids.map do |uid|
-      $redis.hgetall("fb_user:#{uid}").merge is_follow: following?(uid)
+      $redis.hgetall("fb_user:#{uid}").merge(
+          is_follow: following?(uid)
+      )
     end.sort_by { |f| f['name'] }
   end
 
   def app_users
     User.where("id != #{id}").map do |user|
       user.serializable_hash(
-          only: [:uid, :name, :image_url]
+          only: [:uid, :name, :image_url, :status]
       ).merge(
           is_follow: following?(user.uid)
       )

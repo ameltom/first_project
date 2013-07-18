@@ -69,6 +69,7 @@ FirstProject::Application.routes.draw do
 
   post 'sessions/create'
   post 'users/create'
+  post 'users/update_status'
   post 'users/follow'
   post 'users/unfollow'
 

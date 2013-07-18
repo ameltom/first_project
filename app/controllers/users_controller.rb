@@ -20,6 +20,12 @@ class UsersController < ApplicationController
     @tab = 'home'
   end
 
+  def update_status
+    current_user.update_attributes! status: user_params[:status]
+
+    redirect_to '/users/home'
+  end
+
   def following
     @tab = 'following'
     @friends = current_user.following
@@ -53,7 +59,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:username, :name, :email, :password, :password_confirmation, :status)
   end
 
   def render_uid
