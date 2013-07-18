@@ -68,13 +68,15 @@ class User < ActiveRecord::Base
   end
 
   def app_users
-    User.where("id != #{id}").map do |user|
+    users = User.where("id != #{id}").order(:name)
+
+    users.map do |user|
       user.serializable_hash(
           only: [:uid, :name, :image_url, :status]
       ).merge(
           is_follow: following?(user.uid)
       )
-    end.sort_by { |f| f['name'] }
+    end
   end
 
   def set_uid

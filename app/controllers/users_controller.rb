@@ -28,22 +28,19 @@ class UsersController < ApplicationController
 
   def following
     @tab = 'following'
-    @friends = current_user.following
-
-    render :friends
+    paginate_friends
   end
 
   def friends
     @tab = 'friends'
-    @friends = current_user.friends
+    paginate_friends
+
     finished 'go_to_friends'
   end
 
   def app_users
     @tab = 'app_users'
-    @friends = current_user.app_users
-
-    render :friends
+    paginate_friends
   end
 
   def follow
@@ -64,5 +61,15 @@ class UsersController < ApplicationController
 
   def render_uid
     render :json => {success: true, uid: params[:uid]}
+  end
+
+  def paginate_friends
+    current_page = params[:page] || 1
+    @friends = current_user.send(@tab)
+
+    @paginate_simulator = WillPaginate::Collection.new(current_page, WillPaginate.per_page, @friends.size)
+    @friends = @friends.paginate(page: current_page)
+
+    render :friends
   end
 end

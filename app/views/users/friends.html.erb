@@ -10,4 +10,10 @@
     });
 </script>
 
-<div id="friends"></div>
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginate_simulator, model: @tab %>
+  </div>
+  <div id="friends"></div>
+  <%= will_paginate @paginate_simulator, :container => false %>
+</div>
