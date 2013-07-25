@@ -2,11 +2,6 @@ require 'will_paginate/array'
 
 WillPaginate.per_page = 5
 
-# encoding: utf-8
-require 'will_paginate/core_ext'
-require 'will_paginate/i18n'
-require 'will_paginate/deprecation'
-
 module WillPaginate
   module ViewHelpers
     # overwrite the function to fix bug in printing from and to
